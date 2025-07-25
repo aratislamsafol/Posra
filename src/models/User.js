@@ -50,6 +50,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ['active', 'inactive', 'banned'],
     default: 'active'
+  }, 
+  otp: {
+    type: String,
+    required: true
   }
 }, {
   timestamps: true,
