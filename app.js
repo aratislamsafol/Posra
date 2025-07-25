@@ -50,5 +50,10 @@ app.use('/api/v1', router)
 app.use((req, res) => {
   res.status(404).json({ status: "Failed", data: "Not Found" });
 });
+// connect to express with frontend
+// app.use(express.static(path.resolve(__dirname, 'client', 'dist')));
+// app.get('*', function (req, res) {
+//     res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'));
+// });
 
 module.exports = app;
