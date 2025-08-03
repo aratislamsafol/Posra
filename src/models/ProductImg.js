@@ -4,6 +4,7 @@ const productImagesSchema = new mongoose.Schema({
   product_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Product',
+    unique: true,
     required: true
   },
   image_urls: {
@@ -21,6 +22,6 @@ const productImagesSchema = new mongoose.Schema({
   versionKey: false
 });
 
-const ProductImagesModel = mongoose.model('ProductImages', productImagesSchema);
+const ProductImagesModel = mongoose.model('productimages', productImagesSchema);
 
 module.exports = ProductImagesModel;

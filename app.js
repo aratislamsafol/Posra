@@ -50,6 +50,8 @@ app.use('/api/v1', router)
 app.use((req, res) => {
   res.status(404).json({ status: "Failed", data: "Not Found" });
 });
+// multer form data
+app.use('/uploads', express.static('uploads'));
 // connect to express with frontend
 // app.use(express.static(path.resolve(__dirname, 'client', 'dist')));
 // app.get('*', function (req, res) {

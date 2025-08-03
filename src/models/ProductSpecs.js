@@ -12,6 +12,7 @@ const productSpecsSchema = new mongoose.Schema({
     trim: true,
     maxlength: [100, 'Specification field cannot exceed 100 characters']
   },
+  size: "13, 14, 17",
   value: {
     type: String,
     required: [true, 'Specification value is required'],
