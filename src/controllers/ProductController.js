@@ -4,7 +4,8 @@ const {
   ProductSearchServices,
   ProductInsertServices,
   ListByBrandService,
-  ListByCategoryService
+  ListByCategoryService,
+  listBySimilarProductService
 } = require("../services/ProductController");
 const fs = require('fs/promises');
 const path = require('path');
@@ -88,4 +89,10 @@ exports.ProductListByCategory = async(req, res) => {
   const data = await ListByCategoryService(req);
   res.status(200).json(data)
 }
+
+exports.listBySimilarProduct = async(req, res) => {
+  const data = await listBySimilarProductService(req);
+  res.status(200).json(data)
+}
+
 

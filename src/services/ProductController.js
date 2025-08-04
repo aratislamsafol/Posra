@@ -217,6 +217,63 @@ const ListByCategoryService = async(req) => {
   
 }
 
+const listBySimilarProductService = async(req) => {
+  try{
+    const productId = new ObjectId(req.params.productId);
+    const targetProduct  =  await ProductModel.findById(productId);
+    const MatchState = {$match: {
+      _id: { $ne: productId},
+      price: {
+      $gte: targetProduct.price * 0.6,
+      $lte: targetProduct.price * 1.5
+    },
+      category_id: targetProduct.category_id,
+      brand_id: targetProduct.brand_id,
+    }};
+    
+    let JoinWithBrandStage = {
+      $lookup: {
+        from: 'brands',
+        localField: 'brand_id',
+        foreignField: '_id',
+        as: 'brand'
+    }};
+
+    let JoinWithCategoryStage = {
+      $lookup: {
+        from: 'categories',
+        localField: 'category_id',
+        foreignField: '_id',
+        as: 'category'
+    }};
+
+    let UnwindBrandStage = { $unwind: "$brand" };
+    let UnwindCategoryStage = { $unwind: "$category" };
+
+    let ProjectStage = {
+      $project: {
+        "brand._id": 0,
+        "category._id": 0,
+        category_id: 0,
+        brand_id: 0,
+      },
+    }
+    const result = await ProductModel.aggregate([
+      MatchState,
+      JoinWithBrandStage,
+      JoinWithCategoryStage,
+      UnwindBrandStage,
+      UnwindCategoryStage,
+      ProjectStage,
+      { $limit: 10 }
+    ]);
+    return { status: "success", data: result };
+  }
+  catch(err) {
+    return { status: "fail", data: err.message };
+  }
+}
+
 
 module.exports = {
   GetImagesByProductId,
@@ -224,5 +281,6 @@ module.exports = {
   ProductSearchServices,
   ProductInsertServices,
   ListByBrandService,
-  ListByCategoryService
+  ListByCategoryService,
+  listBySimilarProductService
 };

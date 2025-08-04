@@ -22,7 +22,7 @@ router.post('/ProductInsert/:folder', (req, res, next) => {
 }, upload.single('main_image'), ProductController.ProductInsert);
 router.get('/ProductListByBrand/:brandId', ProductController.ProductListByBrand);
 router.get('/ProductListByCategory/:catId', ProductController.ProductListByCategory);
-
+router.get('/listBySimilarProduct/:productId', ProductController.listBySimilarProduct);
 
 
 
