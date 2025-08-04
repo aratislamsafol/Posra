@@ -16,7 +16,7 @@ const CreateCategoryServices = async(reqBody) => {
         return {status: 'Successfully Added Category', data: data}
     } 
     catch(err) {
-        return {status: 'fail to create Category', data: err.toString()}
+        throw new Error(err.message);
     }
 }
 

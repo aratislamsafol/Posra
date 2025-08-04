@@ -10,7 +10,10 @@ router.get('/ProductCategoryList', CategoryController.ProductCategoryList);
 router.get('/GetProductImageController/:productId', ProductController.GetProductImageController);
 router.post('/ProductImgInsert/:productId', ProductController.ProductImgInsert);
 router.post('/CreateBrand', BrandController.CreateBrand);
-router.post('/CreateCategory', CategoryController.CreateCategory);
+router.post('/CreateCategory/:folder', (req, res, next) => {
+  req.dynamicFolder = req.params.folder;
+  next();
+}, upload.single('image_url'), CategoryController.CreateCategory);
 router.get('/ProductSearchList', ProductController.ProductSearchList);
 router.post('/ProductInsert', upload.single('main_image'), ProductController.ProductInsert);
 
