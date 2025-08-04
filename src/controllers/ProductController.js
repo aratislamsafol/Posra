@@ -28,6 +28,7 @@ exports.ProductSearchList = async (req, res) => {
 };
 
 exports.ProductInsert = async (req, res) => {
+  const folder = req.dynamicFolder || "others";
   try {
     const {
       name,
@@ -40,9 +41,9 @@ exports.ProductInsert = async (req, res) => {
       status
     } = req.body;
 
-    let main_image = '';
+    let main_image = "";
     if (req.file) {
-      main_image = `${req.protocol}://${req.get('host')}/uploads/products/${req.file.filename}`;
+      main_image = `${req.protocol}://${req.get("host")}/uploads/${folder}/${req.file.filename}`;
     }
 
     const result = await ProductInsertServices({
@@ -54,7 +55,8 @@ exports.ProductInsert = async (req, res) => {
       price,
       description,
       status,
-      main_image
+      main_image, 
+      folder
     });
 
     res.status(201).json({ success: true, data: result });
@@ -62,8 +64,7 @@ exports.ProductInsert = async (req, res) => {
   } catch (error) {
 
     if (req.file) {
-      const filePath = path.join(__dirname, '../../uploads/products', req.file.filename);
-      console.log('Image path to delete:', filePath);
+      const filePath = path.join(__dirname, `../../uploads/${folder}`, req.file.filename);
       try {
         await fs.unlink(filePath);
         console.log('Image deleted due to failed insert');

@@ -109,7 +109,13 @@ const ProductSearchServices = async (req) => {
 };
 
 const ProductInsertServices = async (reqBody) => {
-  return await ProductModel.create(reqBody); 
+  try{
+    const data = await ProductModel.create(reqBody); 
+    return {status: 'Successfully Added Category', data: data} 
+  }
+  catch(error) {
+    throw new Error(error.message);
+  }
 };
 
 

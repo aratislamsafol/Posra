@@ -15,7 +15,10 @@ router.post('/CreateCategory/:folder', (req, res, next) => {
   next();
 }, upload.single('image_url'), CategoryController.CreateCategory);
 router.get('/ProductSearchList', ProductController.ProductSearchList);
-router.post('/ProductInsert', upload.single('main_image'), ProductController.ProductInsert);
+router.post('/ProductInsert/:folder', (req, res, next) => {
+  req.dynamicFolder = req.params.folder;
+  next();
+}, upload.single('main_image'), ProductController.ProductInsert);
 
 
 
