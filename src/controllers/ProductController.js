@@ -3,6 +3,8 @@ const {
   InsertProductImageQuery,
   ProductSearchServices,
   ProductInsertServices,
+  ListByBrandService,
+  ListByCategoryService
 } = require("../services/ProductController");
 const fs = require('fs/promises');
 const path = require('path');
@@ -76,3 +78,14 @@ exports.ProductInsert = async (req, res) => {
     res.status(400).json({ success: false, message: error.message });
   }
 };
+
+exports.ProductListByBrand = async(req, res) => {
+  const data = await ListByBrandService(req);
+  res.status(200).json(data)
+}
+
+exports.ProductListByCategory = async(req, res) => {
+  const data = await ListByCategoryService(req);
+  res.status(200).json(data)
+}
+

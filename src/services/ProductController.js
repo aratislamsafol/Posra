@@ -118,10 +118,111 @@ const ProductInsertServices = async (reqBody) => {
   }
 };
 
+const ListByBrandService = async(req) => {
+  try{
+    const BrandID = new ObjectId(req.params.brandId); 
+    let MatchStage = { $match: { brand_id: BrandID } };
+
+    let JoinWithBrandStage = {
+      $lookup: {
+        from: 'brands',
+        localField: 'brand_id',
+        foreignField: '_id',
+        as: 'brand'
+    }};
+
+    let JoinWithCategoryStage = {
+      $lookup: {
+        from: 'categories',
+        localField: 'category_id',
+        foreignField: '_id',
+        as: 'category'
+    }};
+
+    let UnwindBrandStage = { $unwind: "$brand" };
+    let UnwindCategoryStage = { $unwind: "$category" };
+
+    let ProjectionStage = {
+      $project: {
+        "brand._id": 0,
+        "category._id": 0,
+        category_id: 0,
+        brand_id: 0,
+      },
+    };
+
+    const result = await ProductModel.aggregate([
+      MatchStage,
+      JoinWithBrandStage,
+      JoinWithCategoryStage,
+      UnwindBrandStage,
+      UnwindCategoryStage,
+      ProjectionStage
+    ]);
+
+    return { status: "success", data: result };
+  } catch (e) {
+    return { status: "fail", data: e.message };
+  }
+}
+
+const ListByCategoryService = async(req) => {
+  try {
+    const categoryId = new ObjectId(req.params.catId);
+  const MatchStage = {$match: {category_id: categoryId}};
+
+  const JoinWithCategoryStage = {
+    $lookup: {
+        from: 'categories',
+        localField: 'category_id',
+        foreignField: '_id',
+        as: 'category'
+    }
+  }
+
+   let JoinWithBrandStage = {
+      $lookup: {
+        from: 'brands',
+        localField: 'brand_id',
+        foreignField: '_id',
+        as: 'brand'
+    }};
+
+    let UnwindBrandStage = { $unwind: "$brand" };
+    let UnwindCategoryStage = { $unwind: "$category" };
+
+    let ProjectionStage = {
+      $project: {
+        "brand._id": 0,
+        "category._id": 0,
+        category_id: 0,
+        brand_id: 0,
+      },
+    };
+
+    const result = await ProductModel.aggregate([
+      MatchStage,
+      JoinWithBrandStage,
+      JoinWithCategoryStage,
+      UnwindBrandStage,
+      UnwindCategoryStage,
+      ProjectionStage
+    ]);
+
+    return { status: "success", data: result };
+  }
+  catch(err) {
+    return { status: "fail", data: e.message };
+  }
+  
+}
+
 
 module.exports = {
   GetImagesByProductId,
   InsertProductImageQuery,
   ProductSearchServices,
-  ProductInsertServices
+  ProductInsertServices,
+  ListByBrandService,
+  ListByCategoryService
 };

@@ -5,6 +5,7 @@ const BrandController = require('../controllers/BrandController');
 const ProductController = require('../controllers/ProductController');
 const upload = require('../middlewares/multer');
 
+// product 
 router.get('/ProductBrandList', BrandController.ProductBrandList);
 router.get('/ProductCategoryList', CategoryController.ProductCategoryList);
 router.get('/GetProductImageController/:productId', ProductController.GetProductImageController);
@@ -19,6 +20,8 @@ router.post('/ProductInsert/:folder', (req, res, next) => {
   req.dynamicFolder = req.params.folder;
   next();
 }, upload.single('main_image'), ProductController.ProductInsert);
+router.get('/ProductListByBrand/:brandId', ProductController.ProductListByBrand);
+router.get('/ProductListByCategory/:catId', ProductController.ProductListByCategory);
 
 
 
