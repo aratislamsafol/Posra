@@ -5,7 +5,8 @@ const {
   ProductInsertServices,
   ListByBrandService,
   ListByCategoryService,
-  listBySimilarProductService
+  listBySimilarProductService,
+  TagByProductServices
 } = require("../services/ProductController");
 const fs = require('fs/promises');
 const path = require('path');
@@ -41,7 +42,8 @@ exports.ProductInsert = async (req, res) => {
       category_id,
       price,
       description,
-      status
+      status,
+      tags
     } = req.body;
 
     let main_image = "";
@@ -59,8 +61,10 @@ exports.ProductInsert = async (req, res) => {
       description,
       status,
       main_image, 
-      folder
+      folder, tags
     });
+
+    
 
     res.status(201).json({ success: true, data: result });
 
@@ -94,5 +98,18 @@ exports.listBySimilarProduct = async(req, res) => {
   const data = await listBySimilarProductService(req);
   res.status(200).json(data)
 }
+
+exports.TagByProduct = async (req, res) => {
+    try {
+      const data = await TagByProductServices(req);
+      res.status(200).json({ status: "success in TagByProduct Response", data: data });
+    } catch (err) {
+      res.status(400).json({ status: "failed", message: err.message });
+  }
+};
+
+
+
+
 
 

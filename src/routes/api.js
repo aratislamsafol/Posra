@@ -4,6 +4,8 @@ const CategoryController = require('../controllers/CategoryController');
 const BrandController = require('../controllers/BrandController');
 const ProductController = require('../controllers/ProductController');
 const upload = require('../middlewares/multer');
+const TagController = require('../controllers/TagController');
+
 
 // product 
 router.get('/ProductBrandList', BrandController.ProductBrandList);
@@ -23,8 +25,13 @@ router.post('/ProductInsert/:folder', (req, res, next) => {
 router.get('/ProductListByBrand/:brandId', ProductController.ProductListByBrand);
 router.get('/ProductListByCategory/:catId', ProductController.ProductListByCategory);
 router.get('/listBySimilarProduct/:productId', ProductController.listBySimilarProduct);
+router.get('/TagByProduct/:productId', ProductController.TagByProduct);
 
 
+// Tag
+router.post('/TagCreate', TagController.TagCreate)  
+router.post('/ProductTagCreate', TagController.ProductTagCreate)
+router.get('/listProductByTags/:tagId', TagController.listProductByTags)
 
 
 module.exports = router;
