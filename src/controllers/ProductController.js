@@ -43,7 +43,14 @@ exports.ProductInsert = async (req, res) => {
       price,
       description,
       status,
-      tags
+      tags, 
+      specification_field, 
+      size,
+      value,
+      unit,
+      values,
+      long_description,
+      is_optional,
     } = req.body;
 
     let main_image = "";
@@ -61,10 +68,16 @@ exports.ProductInsert = async (req, res) => {
       description,
       status,
       main_image, 
-      folder, tags
+      folder, 
+      tags,
+      specification_field, 
+      size,
+      value,
+      unit,
+      values,
+      long_description,
+      is_optional,
     });
-
-    
 
     res.status(201).json({ success: true, data: result });
 
@@ -107,6 +120,59 @@ exports.TagByProduct = async (req, res) => {
       res.status(400).json({ status: "failed", message: err.message });
   }
 };
+
+exports.ProductListSorted = async (req, res) => {
+  try {
+    let sortBy = req.query.sort || 'createdAt_desc';
+
+    let sortOptions = {};
+
+    switch (sortBy) {
+      case 'price_asc':
+        sortOptions.price = 1;
+        break;
+      case 'price_desc':
+        sortOptions.price = -1;
+        break;
+      case 'name_asc':
+        sortOptions.name = 1;
+        break;
+      case 'name_desc':
+        sortOptions.name = -1;
+        break;
+      case 'createdAt_asc':
+        sortOptions.createdAt = 1;
+        break;
+      case 'createdAt_desc':
+        sortOptions.createdAt = -1;
+        break;
+      // case 'rating_desc':
+      //   sortOptions.rating = -1;
+      //   break;
+      // case 'rating_asc':
+      //   sortOptions.rating = 1;
+      //   break;
+      // case 'most_sold':
+      //   sortOptions.rating = 1;
+      //   break;  
+      default:
+        sortOptions.createdAt = -1;
+    }
+
+    const products = await ProductModel.find().sort(sortOptions);
+
+    res.status(200).json({
+      status: "success",
+      data: products
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "fail",
+      message: error.message
+    });
+  }
+};
+
 
 
 

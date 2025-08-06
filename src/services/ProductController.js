@@ -3,7 +3,9 @@ const ProductModel = require("../models/Products");
 const mongoose = require("mongoose");
 const ProductTagModel = require("../models/ProductTags");
 const TagModel = require("../models/TagsModel");
+const ProductSpecsModel = require('../models/ProductSpecs');
 const ObjectId = mongoose.Types.ObjectId;
+
 
 const GetImagesByProductId = async (productId) => {
   // validation
@@ -124,6 +126,13 @@ const ProductInsertServices = async (reqBody) => {
       main_image,
       folder,
       tags,
+      specification_field, 
+      size,
+      value,
+      unit,
+      values,
+      long_description,
+      is_optional,
     } = reqBody;
 
     const data = await ProductModel.create({
@@ -162,6 +171,18 @@ const ProductInsertServices = async (reqBody) => {
         })
       );
     }
+    // Product Description
+    if (specification_field && value) {
+      await ProductSpecsModel.create({
+        product_id: data._id,
+        specification_field,
+        size: Array.isArray(size) ? size : undefined,
+        value,
+        values: Array.isArray(values) ? values : undefined,
+        unit,
+        description: long_description || null,
+        is_optional: is_optional || false,
+      })};
 
     return { status: "Successfully Added Product", data: data };
   } catch (error) {
@@ -343,6 +364,9 @@ const TagByProductServices = async (req) => {
     return { status: "fail", data: err.message };
   }
 };
+// 
+
+
 
 module.exports = {
   GetImagesByProductId,
