@@ -4,7 +4,7 @@ const roleSchema = new mongoose.Schema({
   name: {
     type: String,
     enum: {
-      values: ['Admin', 'Customer', 'Staff', 'Supplier'],
+      values: ['Admin', 'Customer', 'Staff', 'Supplier', 'Manager'],
       message: 'Role name must be one of Admin, Customer, Staff, Supplier'
     },
     required: [true, 'Role name is required'],

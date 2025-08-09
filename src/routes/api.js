@@ -6,7 +6,8 @@ const ProductController = require('../controllers/ProductController');
 const upload = require('../middlewares/multer');
 const TagController = require('../controllers/TagController');
 const ProductSpecsController = require('../controllers/ProductSpecificationController');
-
+const UserController = require('../controllers/UserController');
+const AuthVerification = require('../middlewares/AuthVerification');
 
 // product 
 router.get('/ProductBrandList', BrandController.ProductBrandList);
@@ -36,7 +37,13 @@ router.post('/TagCreate', TagController.TagCreate)
 router.post('/ProductTagCreate', TagController.ProductTagCreate)
 router.get('/listProductByTags/:tagId', TagController.listProductByTags)
 
-// user
+// User
+router.post('/CreateRole', UserController.CreateRole);
+router.get('/UserOTP/:email', UserController.UserOTP);
+router.get('/UserVerifyLoginCustomer', UserController.UserVerifyLoginCustomer);
+router.get('/UserLogout',AuthVerification, UserController.UserLogout)
+
+
 
 
 module.exports = router;
