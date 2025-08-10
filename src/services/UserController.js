@@ -22,15 +22,26 @@ const UserOTPService = async (req) => {
   try {
     let email = req.params.email;
     let code = Math.floor(100000 + Math.random() * 900000);
-    let EmailText = `Your Verification Code is - ${code}`;
+    const EmailText = `
+        <h2>Welcome to POSRA!</h2>
+        <p>Your OTP code is: <strong>${code}</strong></p>
+        <p>Please use this code to verify your email.</p>
+        <br>
+        <p>Thanks,<br>POSRA Team</p>
+      `;
     let EmailSubject = "Email Verification";
-
+    const templateId = '68988e867347a8815d355b8c'; 
     let user = await UserModel.findOne({ email });
 
     if (user?.isVerified) {
       return { status: "Failed", message: "User is already verified" };
     }
-    await EmailSend(email, EmailText, EmailSubject);
+    const emailSendResult = await EmailSend(user?.id, templateId, email, EmailText, EmailSubject);
+     
+    if(emailSendResult.status !== 'success') {
+      return { status: "Fail", message: "Failed to send OTP email" };
+    }
+
     await UserOTPModel.findOneAndUpdate(
       { email: email },
       {
@@ -76,7 +87,6 @@ const VerifyOTPService = async (req) => {
   }
 };
 
-
 const CompleteRegistrationService = async (userId, data) => {
   try {
     const { name, phone, password } = data;
@@ -116,24 +126,93 @@ const CompleteRegistrationService = async (userId, data) => {
   }
 };
 
+
+const LoginWithPasswordService = async (email, password) => {
+  try {
+    const user = await UserModel.findOne({ email });
+
+    if (!user) {
+      return { status: 'fail', message: 'User not found' };
+    }
+
+    if (!user.isVerified) {
+      return { status: 'fail', message: 'Please verify your email first' };
+    }
+
+    if (!user.password) {
+      return { status: 'fail', message: 'Password not set, complete your profile' };
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return { status: 'fail', message: 'Incorrect password' };
+    }
+
+    let token = EncodeToken(email, user._id.toString());
+
+    return {
+      status: 'success',
+      message: 'Login successful',
+      data: {
+        token,
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          phone: user.phone,
+          role_id: user.role_id,
+        }
+      }
+    };
+  } catch (error) {
+    return { status: 'error', message: error.message };
+  }
+};
+
 const SaveProfileService = async (req) => {
   try {
-    const user_id = req['headers'].user_id;
-  
+    const user_id = req.headers.user_id;
+
     if (!user_id) {
       return { status: "fail", message: "User ID not provided" };
     }
 
-    const reqBody = { ...req.body, updatedAt: new Date() };
+
+    let avatarUrl = null;
+    if (req.file) {
+     
+      avatarUrl = `/uploads/${req.dynamicFolder || 'others'}/${req.file.filename}`;
+    }
+
+    // Request body merge
+    const reqBody = {
+      ...req.body,
+      updatedAt: new Date()
+    };
+
+    if (avatarUrl) {
+      reqBody.avatar_url = avatarUrl;
+    }
+
+
     const profile = await UserProfileModel.findOneAndUpdate(
       { _id: user_id },
-      { $set: reqBody },
+      { $set: reqBody, $setOnInsert: { user_id: user_id } },
       { upsert: true, new: true }
     );
 
-    return { status: "success", message: "Profile saved successfully", data: profile };
+    return {
+      status: "success",
+      message: "Profile saved successfully",
+      data: profile
+    };
+
   } catch (e) {
-    return { status: "fail", message: e.message || "Something went wrong" };
+    return {
+      status: "fail",
+      message: e.message || "Something went wrong"
+    };
   }
 };
 
@@ -172,5 +251,6 @@ module.exports = {
   VerifyOTPService,
   CompleteRegistrationService,
   SaveProfileService,
-  ReadProfileService
+  ReadProfileService,
+  LoginWithPasswordService
 };

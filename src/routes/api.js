@@ -8,6 +8,7 @@ const TagController = require('../controllers/TagController');
 const ProductSpecsController = require('../controllers/ProductSpecificationController');
 const UserController = require('../controllers/UserController');
 const AuthVerification = require('../middlewares/AuthVerification');
+const EmailController = require('../controllers/EmailController');
 
 // product 
 router.get('/ProductBrandList', BrandController.ProductBrandList);
@@ -41,10 +42,25 @@ router.get('/listProductByTags/:tagId', TagController.listProductByTags)
 router.post('/CreateRole', UserController.CreateRole);
 router.get('/UserOTP/:email', UserController.UserOTP);
 router.get('/UserVerifyLoginCustomer', UserController.UserVerifyLoginCustomer);
+router.post('/LoginWithPassword', UserController.LoginWithPassword);
 router.get('/UserLogout', AuthVerification, UserController.UserLogout);
 router.post('/CompleteRegistration', AuthVerification, UserController.CompleteRegistration)
-router.post('/CreateProfile', AuthVerification, UserController.CreateProfile);
+router.post('/CreateProfile', AuthVerification,
+  (req, res, next) => { req.dynamicFolder = 'avatars'; 
+    next();
+   },
+  upload.single('avatar'), 
+  UserController.CreateProfile
+);
 router.get("/ReadProfile", AuthVerification, UserController.ReadProfile);
+
+// email template
+router.post('/createTemplate', EmailController.createTemplate);
+router.get('/getAllTemplates', EmailController.getAllTemplates);
+router.get('/getTemplateById/:id', EmailController.getTemplateById);
+router.put('/updateTemplate/:id', EmailController.updateTemplate);
+router.delete('/deleteTemplate/:id', EmailController.deleteTemplate);
+
 
 
 
