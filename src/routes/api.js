@@ -41,7 +41,11 @@ router.get('/listProductByTags/:tagId', TagController.listProductByTags)
 router.post('/CreateRole', UserController.CreateRole);
 router.get('/UserOTP/:email', UserController.UserOTP);
 router.get('/UserVerifyLoginCustomer', UserController.UserVerifyLoginCustomer);
-router.get('/UserLogout',AuthVerification, UserController.UserLogout)
+router.get('/UserLogout', AuthVerification, UserController.UserLogout);
+router.post('/CompleteRegistration', AuthVerification, UserController.CompleteRegistration)
+router.post('/CreateProfile', AuthVerification, UserController.CreateProfile);
+router.get("/ReadProfile", AuthVerification, UserController.ReadProfile);
+
 
 
 

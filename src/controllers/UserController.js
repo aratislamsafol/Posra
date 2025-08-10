@@ -1,7 +1,7 @@
 const {
   UserOTPService,
   RoleCreateService,
-  VerifyOTPService,
+  VerifyOTPService, CompleteRegistrationService, SaveProfileService, ReadProfileService
 } = require("../services/UserController");
 
 exports.CreateRole = async (req, res) => {
@@ -56,3 +56,27 @@ exports.UserLogout=async (req,res)=>{
     res.cookie('token',"",cookieOption)
     return res.status(200).json({status:"success"})
 }
+
+exports.CompleteRegistration = async (req, res) => {
+  const userId = req.headers.user_id;
+  const result = await CompleteRegistrationService(userId, req.body);
+  res.status(result.status === "success" ? 200 : 400).json(result);
+};
+
+exports.CreateProfile=async (req,res)=>{
+    let result=await SaveProfileService(req)
+    return res.status(200).json(result)
+}
+
+
+exports.UpdateProfile=async (req,res)=>{
+    let result=await SaveProfileService(req)
+    return res.status(200).json(result)
+}
+
+
+exports.ReadProfile = async (req, res) => {
+  let result = await ReadProfileService(req);
+  res.status(200).json(result);
+};
+
