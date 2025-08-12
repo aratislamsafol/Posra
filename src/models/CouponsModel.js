@@ -1,44 +1,11 @@
-const mongoose = require('mongoose');
-
 const couponSchema = new mongoose.Schema({
-  code: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true
-  },
-  type: {
-    type: String,
-    enum: ['fixed', 'percent'],
-    required: true
-  },
-  amount: {
-    type: Number,
-    required: true,
-    min: 0
-  },
-  min_purchase: {
-    type: Number,
-    required: true,
-    min: 0
-  },
-  start_date: {
-    type: Date,
-    required: true
-  },
-  end_date: {
-    type: Date,
-    required: true
-  },
-  is_active: {
-    type: Boolean,
-    default: true
-  }
-}, {
-  timestamps: true,
-  versionKey: false
-});
+  code: { type: String, required: true, unique: true },
+  discount_type: { type: String, enum: ['percentage', 'fixed'], required: true },
+  discount_value: { type: Number, required: true },
+  min_purchase: { type: Number, default: 0 },
+  start_date: Date,
+  end_date: Date,
+  usage_limit: Number
+}, { versionKey: false });
 
-const CouponModel = mongoose.model('Coupon', couponSchema);
-
-module.exports = CouponModel;
+module.exports = mongoose.model('Coupon', couponSchema);
