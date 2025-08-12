@@ -80,6 +80,11 @@ exports.LoginWithPassword = async (req, res) => {
   const result = await LoginWithPasswordService(email, password);
 
   if (result.status === 'success') {
+    let cookieOption = {
+      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+      httpOnly: false,
+    };
+    res.cookie("token", result["token"], cookieOption);
     return res.status(200).json(result);
   } else if (result.status === 'fail') {
     return res.status(401).json(result);

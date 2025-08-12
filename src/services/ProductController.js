@@ -126,13 +126,7 @@ const ProductInsertServices = async (reqBody) => {
       main_image,
       folder,
       tags,
-      specification_field, 
-      size,
-      value,
-      unit,
-      values,
-      long_description,
-      is_optional,
+      specs
     } = reqBody;
 
     const data = await ProductModel.create({
@@ -171,18 +165,36 @@ const ProductInsertServices = async (reqBody) => {
         })
       );
     }
-    // Product Description
-    if (specification_field && value) {
-      await ProductSpecsModel.create({
-        product_id: data._id,
-        specification_field,
-        size: Array.isArray(size) ? size : undefined,
-        value,
-        values: Array.isArray(values) ? values : undefined,
-        unit,
-        description: long_description || null,
-        is_optional: is_optional || false,
-      })};
+    
+    // product specification
+    let specsArray = [];
+if (typeof specs === "string") {
+  try {
+    specsArray = JSON.parse(specs);
+  } catch (err) {
+    throw new Error("Invalid specs JSON format");
+  }
+} else if (Array.isArray(specs)) {
+  specsArray = specs;
+}
+
+// Product Description
+if (Array.isArray(specsArray) && specsArray.length > 0) {
+  const specsToInsert = specsArray.map(spec => ({
+    product_id: data._id,
+    size: spec.size,
+    color: spec.color,
+    price: spec.price,
+    stock: spec.stock,
+    specification_field: spec.specification_field || null,
+    values: spec.values || [],
+    unit: spec.unit || null,
+    description: spec.description || null,
+    is_optional: spec.is_optional || false,
+  }));
+
+  await ProductSpecsModel.insertMany(specsToInsert);
+}
 
     return { status: "Successfully Added Product", data: data };
   } catch (error) {

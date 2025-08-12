@@ -9,7 +9,7 @@ const productTagSchema = new mongoose.Schema({
   tag_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Tag',
-    required: true
+    required: true,
   }
 }, {
   timestamps: true,

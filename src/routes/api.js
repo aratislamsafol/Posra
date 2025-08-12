@@ -9,6 +9,9 @@ const ProductSpecsController = require('../controllers/ProductSpecificationContr
 const UserController = require('../controllers/UserController');
 const AuthVerification = require('../middlewares/AuthVerification');
 const EmailController = require('../controllers/EmailController');
+const WishListController = require('../controllers/WishListController');
+const CartController = require('../controllers/CartController');
+
 
 // product 
 router.get('/ProductBrandList', BrandController.ProductBrandList);
@@ -31,7 +34,6 @@ router.get('/listBySimilarProduct/:productId', ProductController.listBySimilarPr
 router.get('/TagByProduct/:productId', ProductController.TagByProduct);
 router.post('/CreateProductSpecification', ProductSpecsController.CreateProductSpecification);
 router.get('/ProductListSorted', ProductController.ProductListSorted);  // create after user & review ready 
-
 
 // Tag
 router.post('/TagCreate', TagController.TagCreate)  
@@ -61,9 +63,15 @@ router.get('/getTemplateById/:id', EmailController.getTemplateById);
 router.put('/updateTemplate/:id', EmailController.updateTemplate);
 router.delete('/deleteTemplate/:id', EmailController.deleteTemplate);
 
+// Wishlist
+router.post('/SaveWishList', AuthVerification, WishListController.SaveWishList)
+router.get('/RemoveWishList',AuthVerification,WishListController.RemoveWishList)
+router.get('/WishList',AuthVerification,WishListController.WishList)
 
-
-
-
+// Cart
+router.post('/addToCartController', AuthVerification, CartController.addToCartController);
+router.put('/updateCartItemController', AuthVerification, CartController.updateCartItemController);
+router.get('/getCartController', AuthVerification, CartController.getCartController);
+router.delete('/removeCartItemController', AuthVerification, CartController.removeCartItemController);
 
 module.exports = router;

@@ -49,12 +49,13 @@ const productSchema = new mongoose.Schema({
     default: '',
     validate: {
       validator: function(v) {
-        if(!v) return true; // empty string allowed
+        if(!v) return true; 
         return /^https?:\/\/.+\.(jpg|jpeg|png|webp|avif|gif|svg)$/i.test(v);
       },
       message: props => `${props.value} is not a valid image URL`
     }
   },
+  
   status: {
     type: String,
     enum: {

@@ -3,7 +3,7 @@ const UserOTPModel = require("../models/UserOTPModel");
 const UserModel = require("../models/User");
 const bcrypt = require("bcrypt");
 const EmailSend = require("../utility/helper/EmailHelper");
-const {EncodeToken, DecodeToken} = require("../utility/helper/TokenHelper");
+const {EncodeToken} = require("../utility/helper/TokenHelper");
 const mongoose = require('mongoose');
 const UserProfileModel = require("../models/UserProfiles");
 
@@ -150,12 +150,13 @@ const LoginWithPasswordService = async (email, password) => {
     }
 
     let token = EncodeToken(email, user._id.toString());
+    console.log(token);
 
     return {
       status: 'success',
       message: 'Login successful',
+      token: token,
       data: {
-        token,
         user: {
           id: user._id,
           name: user.name,

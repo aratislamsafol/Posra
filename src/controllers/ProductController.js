@@ -51,8 +51,9 @@ exports.ProductInsert = async (req, res) => {
       values,
       long_description,
       is_optional,
+      specs 
     } = req.body;
-
+    
     let main_image = "";
     if (req.file) {
       main_image = `${req.protocol}://${req.get("host")}/uploads/${folder}/${req.file.filename}`;
@@ -77,6 +78,7 @@ exports.ProductInsert = async (req, res) => {
       values,
       long_description,
       is_optional,
+      specs 
     });
 
     res.status(201).json({ success: true, data: result });
