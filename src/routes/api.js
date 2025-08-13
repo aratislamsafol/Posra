@@ -11,6 +11,7 @@ const AuthVerification = require('../middlewares/AuthVerification');
 const EmailController = require('../controllers/EmailController');
 const WishListController = require('../controllers/WishListController');
 const CartController = require('../controllers/CartController');
+const OrderController = require('../controllers/OrderController');
 
 
 // product 
@@ -74,4 +75,6 @@ router.put('/updateCartItemController', AuthVerification, CartController.updateC
 router.get('/getCartController', AuthVerification, CartController.getCartController);
 router.delete('/removeCartItemController', AuthVerification, CartController.removeCartItemController);
 
+// Order
+router.post('/CreateOrder', AuthVerification, OrderController.CreateOrder) 
 module.exports = router;
