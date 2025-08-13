@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
-dotenv.config({path: '../../../config.js'});
+dotenv.config({path: '../../../config.env'});
 
 exports.EncodeToken = (email, user_id) => {
     let KEY = process.env.SECRETKEY;

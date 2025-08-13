@@ -30,7 +30,7 @@ app.use(bodyParser.json());
 
 // connection mongoose
 const dotenv = require('dotenv');
-dotenv.config({ path: './config.js'});
+dotenv.config({ path: './config.env'});
 
 let URI = process.env.MongoURL;
 let OPTION = { user: '', pass: '', autoIndex: true }; 

@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const orderPaymentSchema = new mongoose.Schema({
   order_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Order', required: true },
   method: { type: String, enum: ['Cash', 'Card', 'Mobile Banking'], required: true },
