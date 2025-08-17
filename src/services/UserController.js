@@ -126,7 +126,6 @@ const CompleteRegistrationService = async (userId, data) => {
   }
 };
 
-
 const LoginWithPasswordService = async (email, password) => {
   try {
     const user = await UserModel.findOne({ email });
@@ -182,7 +181,6 @@ const SaveProfileService = async (req) => {
 
     let avatarUrl = null;
     if (req.file) {
-     
       avatarUrl = `/uploads/${req.dynamicFolder || 'others'}/${req.file.filename}`;
     }
 

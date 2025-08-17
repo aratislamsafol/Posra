@@ -46,16 +46,19 @@ mongoose.connect(URI, OPTION)
 
 // Routing Implement
 app.use('/api/v1', router)
+
 // Undefined Route Implement
 app.use((req, res) => {
   res.status(404).json({ status: "Failed", data: "Not Found" });
 });
+
 // multer form data
 app.use('/uploads', express.static('uploads'));
+
 // connect to express with frontend
-// app.use(express.static(path.resolve(__dirname, 'client', 'dist')));
-// app.get('*', function (req, res) {
-//     res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'));
-// });
+app.use(express.static('client/dist'));
+app.get('*', function (req, res) {
+    res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'));
+});
 
 module.exports = app;
