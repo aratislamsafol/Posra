@@ -44,21 +44,25 @@ mongoose.connect(URI, OPTION)
     console.error("MongoDB connection error:", err);
   });
 
-// Routing Implement
-app.use('/api/v1', router)
 
-// Undefined Route Implement
-app.use((req, res) => {
-  res.status(404).json({ status: "Failed", data: "Not Found" });
-});
 
-// multer form data
+// 1️⃣ multer static serve
 app.use('/uploads', express.static('uploads'));
 
-// connect to express with frontend
-app.use(express.static('client/dist'));
-app.get('*', function (req, res) {
-    res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'));
+// 2️⃣ API routes
+app.use('/api/v1', router);
+
+// 3️⃣ Frontend static serve
+app.use(express.static(path.join(__dirname, 'client', 'dist')));
+
+// 4️⃣ Frontend fallback route (React)
+app.get(/.*/, (req, res) => {
+  res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+});
+
+// 5️⃣ 404 for truly unknown routes (optional)
+app.use((req, res) => {
+  res.status(404).json({ status: "Failed", data: "Not Found" });
 });
 
 module.exports = app;
