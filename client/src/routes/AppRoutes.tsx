@@ -3,7 +3,6 @@ import { createBrowserRouter } from "react-router";
 import Root from "../root/Root";
 import HomeLayout from '../layouts/HomeLayout';
 import {Loader} from "../utils/Loader";
-// import Loader from "../utils/Loader";
 
 const router = createBrowserRouter([
     {
@@ -13,7 +12,7 @@ const router = createBrowserRouter([
                 <Root></Root>
             </Suspense>
         ),
-        loader: Loader({ProductCategoryList:'http://localhost:5000/api/v1/ProductCategoryList'}),
+        loader: Loader({location: '/location.json'}),
         children: [
             {
                 path: '/',
