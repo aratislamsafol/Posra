@@ -3,9 +3,11 @@ import Modal from "../UI/Modal";
 import { Button } from "@headlessui/react";
 import clsx from "clsx";
 import { MapPinHouse } from "lucide-react";
+import {useLocationStore} from '../../store/LocationStore';
 
 const Location = () => {
   const [open, setOpen] = useState<boolean>(false);
+    const { division} = useLocationStore();
   return (
     <div>
       <Button as={Fragment}>
@@ -21,7 +23,7 @@ const Location = () => {
             <p className={`text-sm/4 font-semibold text-gray-600`}>
               Deliver to, <br />
               <span className="font-bold text-amber-600 flex items-center gap-0.5">
-                <MapPinHouse className="w-4" /> Bangladesh
+                <MapPinHouse className="w-4" /> {division}
               </span>
             </p>
           </button>
