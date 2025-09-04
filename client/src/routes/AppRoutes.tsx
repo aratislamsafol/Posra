@@ -12,12 +12,12 @@ const router = createBrowserRouter([
                 <Root></Root>
             </Suspense>
         ),
-        loader: Loader({location: '/location.json'}),
+        loader: Loader({location: '/location.json', categoriesData: 'http://localhost:5000/api/v1/ProductCategoryList'}),
         children: [
             {
                 path: '/',
                 element: <HomeLayout></HomeLayout>,
-                
+
             }
         ]
     }

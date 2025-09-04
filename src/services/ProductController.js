@@ -298,7 +298,7 @@ const ListByCategoryService = async (req) => {
 
     return { status: "success", data: result };
   } catch (err) {
-    return { status: "fail", data: e.message };
+    return { status: "fail", data: err.message };
   }
 };
 

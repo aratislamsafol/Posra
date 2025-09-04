@@ -7,7 +7,7 @@ import {useLocationStore} from '../../store/LocationStore';
 
 const Location = () => {
   const [open, setOpen] = useState<boolean>(false);
-    const { division} = useLocationStore();
+  const { division} = useLocationStore();
   return (
     <div>
       <Button as={Fragment}>
