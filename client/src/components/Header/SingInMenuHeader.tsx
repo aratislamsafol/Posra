@@ -13,9 +13,9 @@ const SignInMenu = () => {
       {({ open }) => (
         <>
           <PopoverButton className="outline-none focus:outline-none cursor-pointer transition-all text-gray-800 data-active:text-blue-950 data-hover:text-black">
-            <h5 className="text-sm font-normal">
+            <h5 className="text-sm font-normal hidden sm:block sm:font-semibold sm:text-base leading-tight">
               Hello, sign in <br />
-              <span className="text-base font-semibold ">Account</span>
+              <span className="text-base font-semibold sm:hidden lg:block">Account</span>
             </h5>
           </PopoverButton>
 

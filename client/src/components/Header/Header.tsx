@@ -1,46 +1,67 @@
-// import logo from '../../assets/logo/POSRA E-commerce Logo Design.png';
-import { ShoppingBag } from "lucide-react";
+import { Link } from "react-router-dom";
 import Location from "../Location/Location";
 import CategoryFilterSearch from "../Search/CategoryFilterSearch";
 import SignInMenu from "./SingInMenuHeader";
 import LanguageSelect from "../LanguageSelect/LanguageSelect";
+import { ShoppingBag } from "lucide-react";
+import Humburger from "../../utils/Humburger";
+import { useState } from "react";
+import OffCanvas from "./OffCanvas";
+import Modal from "../Modal/Modal";
+
 const Header = () => {
+    // off canvavs
+    const [open, setOpen] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false);
+    
   return (
-    <div className="wrapper py-2 px-4 shadow-sm backdrop-blur-2xl text-center z-10">
-      {/* Head Content */}
-      <section className="flex gap-4 items-center">
-        {/* location & logo */}
-        <div className="flex gap-2 items-center">
-          <div className="logo">
-            <h1 className="font-bold text-4xl">
-              <span className="text-amber-500">P</span>OSRA
-            </h1>
-            {/* <img src={logo} className='w-30 bg-red-600' alt="company Logo" /> */}
-          </div>
-          {/* location of users */}
+    // Parent Div
+    <div className="flex items-center justify-between m-1 border-b border-gray-100 p-2 ">
+      {/* logo & location */}
+      <div className="flex gap-[6px]">
+        <Link to="" className="font-bold text-2xl md:text-4xl">
+          <span className="text-amber-500">P</span>OSRA
+        </Link>
+
+        <div className="hidden lg:block">
           <Location />
         </div>
+      </div>
 
-        {/* SearchBar */}
-        <div className="flex-grow">
-          <CategoryFilterSearch />
+      {/* SearchBar */}
+      <div className="flex-grow hidden lg:block">
+        <CategoryFilterSearch />
+      </div>
+
+      {/* User Orders, Cart ETC */}
+      <div className="flex items-center gap-3 md:gap-4 ml-3">
+        <div className="hidden sm:block">
+          <SignInMenu />
         </div>
-        {/* sign in */}
-        <SignInMenu />
         {/* Language */}
         <LanguageSelect />
-        {/* Return/ Orders */}
-        <div>
-          <h5 className="text-base font-semibold">& Orders</h5>
+        {/*  Orders Link */}
+        <Link to="/orders" className="hidden sm:block text-base font-semibold">
+          Orders
+        </Link>
+
+        {/* Cart Link */}
+        <Link
+          to="/cart"
+          className="flex items-center gap-2 font-semibold text-slate-900"
+        >
+          <ShoppingBag />
+          <span className="hidden md:block">Cart</span>
+        </Link>
+
+        {/* off Canvas Button */}
+        <div className="lg:hidden">
+            <Humburger size={24} gap={6} open={open} setOpen={setOpen} />
         </div>
-        {/* Cart */}
-        <div>
-          <h5 className="flex gap-2  font-semibold text-slate-900">
-            <ShoppingBag /> Cart
-          </h5>
-        </div>
-      </section>
-      {/* Navbar */}
+          {/* Offcanvas Menu */}
+        <OffCanvas modalOpen={modalOpen} setModalOpen= {setModalOpen} open={open} setOpen={setOpen} />
+        <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+      </div>
     </div>
   );
 };

@@ -7,10 +7,10 @@ const LanguageSelect = () => {
   const setSelected = useLanguageStore((state) => state.setSelected);
 
   return (
-    <Popover className="relative cursor-pointer">
+    <Popover className="relative">
       {({ open }) => (
         <>
-          <PopoverButton className="flex gap-1 items-center">
+          <PopoverButton className="flex gap-1 items-center cursor-pointer">
             <img src={selected.flag} alt={selected.name} className="w-5 h-5" />
             <h5 className="text-sm font-semibold">{selected.code}</h5>
           </PopoverButton>
@@ -36,7 +36,7 @@ const LanguageSelect = () => {
                   <Radio
                     key={language.code}
                     value={language}
-                    className="group flex items-center justify-between border rounded-lg p-2 shadow-md cursor-pointer transition
+                    className="cursor-pointer group flex items-center justify-between border rounded-lg p-2 shadow-md transition
                                data-[checked]:border-blue-500 data-[checked]:bg-blue-100 min-w-50"
                   >
                     <span className="flex items-center gap-2 overflow-hidden">
